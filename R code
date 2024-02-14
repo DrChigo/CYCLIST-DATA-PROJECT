@@ -1,0 +1,111 @@
+# Import CSV file
+cyclist2019 <- read.csv("C:\\Users\\RENET\\Downloads\\cylist\\Divvy_Trips_2019_Q1.csv", header = TRUE)
+str(cyclist2019)
+colnames(cyclist2019)
+#  Clean the data
+cyclist2019 [is.na(cyclist2019)] <- 0
+# Create new columns
+cyclist2019$start_time <- as.POSIXct(cyclist2019$start_time)
+cyclist2019$end_time <- as.POSIXct(cyclist2019$end_time)
+cyclist2019$ride_length <- cyclist2019$end_time - cyclist2019$start_time
+cyclist2019$day_of_week <- weekdays(cyclist2019$start_time)
+# Summary statistics
+summary(cyclist2019, mean_tripduration= (tripduration))
+summary(cyclist2019, mean_ride_length= (ride_length))
+summary(cyclist2019, mean_tripduration= (tripduration))
+summary(cyclist2019, mean_tripduration= (tripduration))
+#install.packages ("dplyr")
+#library(dplyr)
+#install.packages ("ggplot2")
+#library (ggplot2)
+#install.packages ("tidyverse")
+#library (tidyverse)
+# Bar chart
+ggplot(data = cyclist2019, aes(x = factor(1), y = tripduration)) +
+  geom_bar(stat = "summary", fun = "mean", fill = "skyblue") +
+  labs(title = "Mean Trip Duration",
+       x = NULL,
+       y = "Trip Duration")
+ggplot(data = cyclist2019, aes(x = factor(1), y =(ride_length))) +
+  geom_bar(stat = "summary", fun = "mean", fill = "lightgreen") +
+  labs(title = "Mean Ride Length",
+       x = NULL,
+       y = "Ride Length")
+# Plotting the gender bar chart with percentages
+ggplot(data = cyclist2019, aes(x = "", fill = gender)) +
+  geom_bar(position = "fill") +
+  labs(title = "Gender Distribution",
+       x = "Gender",
+       y = "Percent") +
+  scale_y_continuous(labels = scales::percent) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplot(data = cyclist2019, aes(x = factor(day_of_week))) +
+  geom_bar(fill = "orange") +
+  labs(title = "Rides by Day of Week",
+       x = "Day of Week",
+       y = "Count") +
+  scale_x_discrete(labels = c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"))
+# Plotting the weekday bar chart with percentages
+ggplot(data = cyclist2019, aes(x = usertype)) +
+  geom_bar(fill = "cyan") +
+  labs(title = "User Type Distribution",
+       x = "User Type",
+       y = "Count")
+# Import CSV file 
+cyclist2020 <- read.csv("C:\\Users\\RENET\\Downloads\\cylist\\Divvy_Trips_2020_Q1.csv", header = TRUE)
+#  View data structure and types
+str(cyclist2020)
+colnames(cyclist2020)
+#clean data
+cyclist2020 [is.na(cyclist2020)] <- 0
+# Convert the content of column member_casual to (member=Subscriber, casual=Customer)
+cyclist2020$member_casual[cyclist2020$member_casual == "member"] <- "Subscriber"
+cyclist2020$member_casual[cyclist2020$member_casual == "casual"] <- "Customer"
+# create new column
+cyclist2020$started_at <- as.POSIXct(cyclist2020$started_at)
+cyclist2020$ended_at <- as.POSIXct(cyclist2020$ended_at)
+cyclist2020$ride_length <- (cyclist2020$ended_at - cyclist2020$started_at)
+cyclist2020$tripduration <- cyclist2020$end_lng - cyclist2020$start_lng
+cyclist2020$day_of_week <- weekdays(cyclist2020$started_at)
+#summary statistics
+summary(cyclist2020, mean_tripduration= (tripduration))
+summary(cyclist2020, ride_length= (ride_length))
+# Bar chart for tripduration
+ggplot(data = cyclist2020, aes(x = ride_length, y = tripduration)) +
+  geom_point() +
+  labs(title = "Mean Trip Duration",
+       x = "ride_length",
+       y = "Trip Duration")
+#Bar chart for day_of_week
+ggplot(data = cyclist2020, aes(x = factor(day_of_week))) +
+  geom_bar(fill = "orange") +
+  labs(title = "Rides by Day of Week",
+       x = "Day of Week",
+       y = "Count") +
+  scale_x_discrete(labels = c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"))
+ggplot(data = cyclist2020, aes(x = member_casual)) +
+  geom_bar(fill = "pink") +
+  labs(title = "Subscriber vs Customer",
+       x = "Member Type",
+       y = "Count")
+# Rename some columns and Merge cyclist2019 and cyclist2020
+cyclist2020 <- cyclist2020 %>%
+  rename(from_station_id = start_station_id,
+         from_station_name = start_station_name,
+         to_station_id = end_station_id,
+         to_station_name = end_station_name,
+         usertype = member_casual)
+
+ggplot(data = cyclist2020, aes(x = ride_id, y = tripduration)) +
+  geom_point() +
+  labs(title = "Mean Trip Duration",
+       x = "ride_length",
+       y = "Trip Duration")
+
+
+
+ggplot(data = cyclist2019, aes(x = trip_id, y = tripduration)) +
+  geom_point() +
+  labs(title = "Mean Trip Duration",
+       x = "ride_length",
+       y = "Trip Duration")
